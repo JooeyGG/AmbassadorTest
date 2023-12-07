@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Ambassador - Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
+    
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Restaurant Ambassador Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="take.html">Take N' Bake</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <div class="hero-container">
+            <div class="text-container">
+                <h2>Discover Our Culinary Delights</h2>
+                <p>Explore a menu crafted with passion and care.</p>
+            </div>
+            <div class="image-container">
+                <img src="images/exterior.jpg" alt="Restaurant Image">
+            </div>
+        </div>
+    </section>
+
+    <section id="map">
+        <div class="map-container">
+            <iframe
+                width="300px"
+                height="300px"
+                frameborder="0"
+                style="border: 0"
+                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDnkTjZrySfiFRuJwlZbvQn7tSlhlJjL9c&q=126+Shelden+Ave,Houghton,MI+49931"
+                allowfullscreen
+            ></iframe>
+        </div>
+        <div class="text-container">
+            <h2>Hours</h2>
+            <p>Monday - Thursday  11am - 9 pm</p>
+            <p>Friday & Saturday  11am - 9 pm</p>
+            <p>Sunday  4 pm - 9 pm</p>
+            <h2>Phone</h2>
+            <p>(906) 482-5054</p>
+            <h2>Address</h2>
+            <P>126 Shelden Ave.</P>
+            <p>Houghton, MI 49931</p>
+            <h2>Social Media</h2>
+            <p>https://www.facebook.com/ambohoughton</p>
+        </div>
+    </section>
+
+    <section id="reviews">
+        <h2>Customer Reviews</h2>
+        <div id="yelp-reviews"></div>
+    </section>
+
+    
+
+
+
+    <script>
+        
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const yelpAPIKey = 'iblcrGjY1X1j7xhB72SkVKsE2bGDUjASxYT59kbEM16agYl7VxFwX2ojboN2petLh3ntsN-yeGVJWZ23XvpYn50Rwi-HTgiM8qmWdI1ciepQtj3dQ2LD-dGTHGFxZXYx'; // Replace with your Yelp API key
+    const yelpBusinessID = 'ambassador-houghton'; // Replace with your Yelp Business ID
+
+    // Fetch Yelp reviews
+    fetch(`https://api.yelp.com/v3/businesses/${yelpBusinessID}/reviews`, {
+    method: 'GET',
+    headers: {
+        'Authorization': `Bearer ${yelpAPIKey}`,
+        'Content-Type': 'application/json',
+    },
+    mode: 'cors',
+    })
+    .then(response => response.json())
+    .then(data => displayReviews(data.reviews))
+    .catch(error => console.error('Error fetching Yelp reviews:', error));
+    });
+
+    function displayReviews(reviews) {
+        const yelpReviewsContainer = document.getElementById('yelp-reviews');
+
+        if (reviews.length > 0) {
+            reviews.forEach(review => {
+                const reviewElement = document.createElement('div');
+                reviewElement.classList.add('review');
+
+               const ratingElement = document.createElement('p');
+                ratingElement.textContent = `Rating: ${review.rating}`;
+
+               const textElement = document.createElement('p');
+               textElement.textContent = review.text;
+
+                reviewElement.appendChild(ratingElement);
+               reviewElement.appendChild(textElement);
+
+                yelpReviewsContainer.appendChild(reviewElement);
+            });
+        } else {
+            const noReviewsElement = document.createElement('p');
+            noReviewsElement.textContent = 'No Yelp reviews available.';
+             yelpReviewsContainer.appendChild(noReviewsElement);
+        }
+    }
+
+    </script>
+</body>
+
+</html>
